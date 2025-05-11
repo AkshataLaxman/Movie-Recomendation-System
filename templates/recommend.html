@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Movie Recommendations</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('recommend') }}">Recommendations</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('admin_login') }}">Admin Login</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Find Movies by Genre</h2>
+        <form method="POST" action="{{ url_for('recommend') }}">
+            <label for="genre">Genre:</label>
+            <input type="text" id="genre" name="genre" required>
+            <button type="submit" class="btn">Get Recommendations</button>
+        </form>
+        <div class="movie-list">
+            {% for movie in movies %}
+            <div class="movie-card">
+                <img src="{{ url_for('static', filename=movie.poster_url) }}" alt="{{ movie.title }} Poster">
+                <h3>{{ movie.title }}</h3>
+                <p>Genre: {{ movie.genre }}</p>
+                <p>Showtimes: {{ movie.showtimes }}</p>
+                <p>Theater: {{ movie.theater.name }} ({{ movie.theater.location }})</p>
+                <a href="{{ url_for('book', movie_id=movie.id) }}" class="btn">Book Now</a>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Seat Prices</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Manage Seat Prices</h1>
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('add_movie') }}">Add Movie</a>
+            <a href="{{ url_for('view_recommendations') }}">View Recommendations</a>
+            <a href="{{ url_for('manage_seat_prices') }}">Manage Seat Prices</a>
+            <a href="{{ url_for('customer_recommendations') }}">Customer Recommendations</a>
+            <a href="{{ url_for('admin_logout') }}">Logout</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Update Seat Prices</h2>
+        {% if get_flashed_messages(category_filter=['success']) %}
+        <p class="success">{{ get_flashed_messages(category_filter=['success'])[0] }}</p>
+        {% endif %}
+        <form method="POST" action="{{ url_for('manage_seat_prices') }}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Theater</th>
+                        <th>Location</th>
+                        <th>Classic Price (₹)</th>
+                        <th>Premium Price (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for theater in theaters %}
+                    <tr>
+                        <td>{{ theater.name }}</td>
+                        <td>{{ theater.location }}</td>
+                        <td>
+                            <input type="number" step="0.01" name="classic_price_{{ theater.id }}" value="{{ theater.classic_price }}" required>
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" name="premium_price_{{ theater.id }}" value="{{ theater.premium_price }}" required>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn">Update Prices</button>
+        </form>
+    </main>
+</body>
+</html>

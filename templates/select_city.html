@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select City</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Select Your City</h1>
+        <nav>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('admin_login') }}">Admin Login</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Choose a City to View Theaters</h2>
+        {% if get_flashed_messages(category_filter=['success']) %}
+        <p class="success">{{ get_flashed_messages(category_filter=['success'])[0] }}</p>
+        {% endif %}
+        {% if get_flashed_messages(category_filter=['error']) %}
+        <p class="error">{{ get_flashed_messages(category_filter=['error'])[0] }}</p>
+        {% endif %}
+        <form method="POST" action="{{ url_for('select_city') }}">
+            <label for="city">City:</label>
+            <select id="city" name="city" required>
+                <option value="" disabled selected>Select a city</option>
+                {% for city in cities %}
+                <option value="{{ city }}">{{ city }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn">Select City</button>
+        </form>
+    </main>
+</body>
+</html>

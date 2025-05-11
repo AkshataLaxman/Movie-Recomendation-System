@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book {{ movie.title }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Book Tickets</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('recommend') }}">Recommendations</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('admin_login') }}">Admin Login</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Booking for {{ movie.title }}</h2>
+        <p>Theater: {{ movie.theater.name }} ({{ movie.theater.location }})</p>
+        {% if get_flashed_messages(category_filter=['error']) %}
+        <p class="error">{{ get_flashed_messages(category_filter=['error'])[0] }}</p>
+        {% endif %}
+        <form method="POST" action="{{ url_for('book', movie_id=movie.id) }}" id="booking-form">
+            <label for="user_name">Your Name:</label>
+            <input type="text" id="user_name" name="user_name" value="{{ user.username }}" required readonly>
+            <label>Select Seats:</label>
+            <div class="seat-selection">
+                <div class="screen">Screen</div>
+                <div class="seat-legend">
+                    <span class="legend-item"><span class="seat available"></span> Available</span>
+                    <span class="legend-item"><span class="seat selected"></span> Selected</span>
+                    <span class="legend-item"><span class="seat booked"></span> Booked</span>
+                </div>
+                <div class="seat-section">
+                    <h3>Premium Seats (₹{{ movie.theater.premium_price }} each)</h3>
+                    <div class="seats">
+                        {% for row in ['A', 'B'] %}
+                        <div class="seat-row">
+                            <span class="row-label">{{ row }}</span>
+                            {% for col in range(1, 11) %}
+                            <div class="seat available premium" data-seat="{{ row }}{{ col }}" data-price="{{ movie.theater.premium_price }}">
+                                {{ row }}{{ col }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="seat-section">
+                    <h3>Classic Seats (₹{{ movie.theater.classic_price }} each)</h3>
+                    <div class="seats">
+                        {% for row in ['C', 'D', 'E'] %}
+                        <div class="seat-row">
+                            <span class="row-label">{{ row }}</span>
+                            {% for col in range(1, 11) %}
+                            <div class="seat available classic" data-seat="{{ row }}{{ col }}" data-price="{{ movie.theater.classic_price }}">
+                                {{ row }}{{ col }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="seat_ids" name="seat_ids" required>
+            <input type="hidden" id="total_price" name="total_price" required>
+            <div class="total-price">
+                Total Price: ₹<span id="total-price-display">0</span>
+            </div>
+            <label for="showtime">Select Showtime:</label>
+            <select id="showtime" name="showtime" required>
+                {% for showtime in movie.showtimes.split(',') %}
+                <option value="{{ showtime }}">{{ showtime }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn">Confirm Booking</button>
+        </form>
+    </main>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

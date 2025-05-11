@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Movie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Add Movie</h1>
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('add_movie') }}">Add Movie</a>
+            <a href="{{ url_for('view_recommendations') }}">View Recommendations</a>
+            <a href="{{ url_for('manage_seat_prices') }}">Manage Seat Prices</a>
+            <a href="{{ url_for('customer_recommendations') }}">Customer Recommendations</a>
+            <a href="{{ url_for('admin_logout') }}">Logout</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Add a New Movie</h2>
+        {% if get_flashed_messages(category_filter=['success']) %}
+        <p class="success">{{ get_flashed_messages(category_filter=['success'])[0] }}</p>
+        {% endif %}
+        {% if get_flashed_messages(category_filter=['error']) %}
+        <p class="error">{{ get_flashed_messages(category_filter=['error'])[0] }}</p>
+        {% endif %}
+        <form method="POST" action="{{ url_for('add_movie') }}" enctype="multipart/form-data">
+            <label for="title">Movie Title:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="genre">Genre:</label>
+            <input type="text" id="genre" name="genre" required>
+            <label for="showtimes">Showtimes (comma-separated, e.g., 4:00 PM,7:00 PM):</label>
+            <input type="text" id="showtimes" name="showtimes" required>
+            <label for="theater_id">Theater:</label>
+            <select id="theater_id" name="theater_id" required>
+                {% for theater in theaters %}
+                <option value="{{ theater.id }}">{{ theater.name }} ({{ theater.location }})</option>
+                {% endfor %}
+            </select>
+            <label for="poster">Poster Image (jpg, jpeg, png):</label>
+            <input type="file" id="poster" name="poster" accept="image/jpeg,image/jpg,image/png" required>
+            <button type="submit" class="btn">Add Movie</button>
+        </form>
+    </main>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

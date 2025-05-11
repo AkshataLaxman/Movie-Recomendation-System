@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Booking Confirmed</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('recommend') }}">Recommendations</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('admin_login') }}">Admin Login</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Thank You, {{ booking.user.username }}!</h2>
+        <p>Your booking for <strong>{{ movie.title }}</strong> has been confirmed.</p>
+        <p>Details:</p>
+        <ul>
+            <li>Location: {{ movie.theater.name }} ({{ movie.theater.location }})</li>
+            <li>Seats: {{ booking.seat_ids }}</li>
+            <li>Showtime: {{ booking.showtime }}</li>
+            <li>Total Price: ₹{{ booking.total_price }}</li>
+        </ul>
+        <a href="{{ url_for('index') }}" class="btn">Back to Home</a>
+    </main>
+</body>
+</html>

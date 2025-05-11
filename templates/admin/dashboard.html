@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('add_movie') }}">Add Movie</a>
+            <a href="{{ url_for('view_recommendations') }}">View Recommendations</a>
+            <a href="{{ url_for('manage_seat_prices') }}">Manage Seat Prices</a>
+            <a href="{{ url_for('customer_recommendations') }}">Customer Recommendations</a>
+            <a href="{{ url_for('admin_logout') }}">Logout</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Manage Movies</h2>
+        {% if get_flashed_messages(category_filter=['success']) %}
+        <p class="success">{{ get_flashed_messages(category_filter=['success'])[0] }}</p>
+        {% endif %}
+        <div class="movie-list">
+            {% for movie in movies %}
+            <div class="movie-card">
+                <img src="{{ url_for('static', filename=movie.poster_url) }}" alt="{{ movie.title }} Poster">
+                <h3>{{ movie.title }}</h3>
+                <p>Genre: {{ movie.genre }}</p>
+                <p>Showtimes: {{ movie.showtimes }}</p>
+                <p>Theater: {{ movie.theater.name }} ({{ movie.theater.location }})</p>
+                <a href="{{ url_for('remove_movie', movie_id=movie.id) }}" class="btn">Remove</a>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

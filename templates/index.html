@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Movie Booking System</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('recommend') }}">Recommendations</a>
+            <a href="{{ url_for('select_city') }}">Change City ({{ selected_city }})</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('admin_login') }}">Admin Login</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Theaters in {{ selected_city }}</h2>
+        {% if get_flashed_messages(category_filter=['error']) %}
+        <p class="error">{{ get_flashed_messages(category_filter=['error'])[0] }}</p>
+        {% endif %}
+        {% if theaters %}
+        <div class="theater-list">
+            {% for theater in theaters %}
+            <div class="theater-card">
+                <h3>{{ theater.name }}</h3>
+                <p>Location: {{ theater.location }}</p>
+                <h4>Now Showing</h4>
+                <div class="movie-list">
+                    {% for movie in theater.movies %}
+                    <div class="movie-card">
+                        <img src="{{ url_for('static', filename=movie.poster_url) }}" alt="{{ movie.title }} Poster">
+                        <h3>{{ movie.title }}</h3>
+                        <p>Genre: {{ movie.genre }}</p>
+                        <p>Showtimes: {{ movie.showtimes }}</p>
+                        <a href="{{ url_for('book', movie_id=movie.id) }}" class="btn">Book Now</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No theaters available in {{ selected_city }} at the moment.</p>
+        {% endif %}
+    </main>
+</body>
+</html>

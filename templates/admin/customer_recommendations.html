@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Recommendations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Customer Recommendations</h1>
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('add_movie') }}">Add Movie</a>
+            <a href="{{ url_for('view_recommendations') }}">View Recommendations</a>
+            <a href="{{ url_for('manage_seat_prices') }}">Manage Seat Prices</a>
+            <a href="{{ url_for('customer_recommendations') }}">Customer Recommendations</a>
+            <a href="{{ url_for('admin_logout') }}">Logout</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Customer Recommendation Searches</h2>
+        {% if searches %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Genre Searched</th>
+                    <th>Recommended Movies</th>
+                    <th>Timestamp (IST)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for search in searches %}
+                <tr>
+                    <td>{{ search.genre }}</td>
+                    <td>{{ search.recommended_movies }}</td>
+                    <td>{{ search.timestamp.astimezone().strftime('%Y-%m-%d %I:%M:%S %p') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No customer recommendation searches found.</p>
+        {% endif %}
+    </main>
+</body>
+</html>
