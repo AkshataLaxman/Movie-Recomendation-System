@@ -2,6 +2,9 @@ Cross multiple theaters in various Indian cities. The application features both 
 
 ## 🎬 Features
 
+### Screenshots
+![image](https://github.com/user-attachments/assets/75afbb55-abe0-4f59-aff7-fea457a76d0c)
+
 ### User Features
 - **User Registration & Authentication**: Secure signup and login system
 - **City-based Movie Filtering**: Choose your city to see relevant theaters and movies
